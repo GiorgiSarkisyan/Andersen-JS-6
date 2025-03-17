@@ -1,34 +1,30 @@
 class DataHandler {
-  constructor() {
-    this.storage = [];
-  }
-
   fetchPosts() {
-    return new Promise((resolve, reject) => {
-      fetch("https://jsonplaceholder.typicode.com/posts")
-        .then((response) => response.json())
-        .then((data) => {
-          this.storage = data;
-          resolve();
-        })
-        .catch((error) => {
-          console.error(error);
-          reject(error);
-        });
-    });
+    return fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((response) => response.json())
+      .then((data) => {
+        this.storage = new Map(data.map((post) => [post.id, post]));
+        return this;
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+        throw error;
+      });
   }
 
   listPosts() {
-    const sortedStorage = [...this.storage];
-    return sortedStorage.sort((a, b) => a.title.localeCompare(b.title));
+    return [...this.storage.values()].sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
   }
 
   getPost(id) {
-    return this.storage.find((p) => p.id === id);
+    return this.storage.get(id);
   }
 
   clearPosts() {
-    this.storage = [];
+    this.storage.clear();
+    return this;
   }
 }
 
