@@ -35,7 +35,11 @@ dataHandler
   .then(() => {
     console.log(dataHandler.listPosts());
     console.log(dataHandler.getPost(22));
+    console.log(dataHandler.clearPosts());
   })
   .catch((error) => {
     console.error(error);
   });
+
+// I added Map, i added it straight into the fetch because i don't think adding it into constructor made any sense because
+// it should change and be fresh and stuff and i kinda repeat myself so that's how i did it
